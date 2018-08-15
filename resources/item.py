@@ -10,14 +10,14 @@ class Item(Resource):
 
     @jwt_required()
     def get(self, name):
-        item = ItemModel.find_by_name(name, data['store_id'])
+        item = ItemModel.find_by_name(name, store_id)
         return item.json() if item else {'message': 'Item not found'}, 404
     
         
     
     def post(self, name):
         data = Item.parser.parse_args()
-        if ItemModel.find_by_name(name, data['store_id']):
+        if ItemModel.find_by_name(name):
             return {'message': 'Item with name {} already exists.'.format(name)}, 400       
         
         item = ItemModel(name, **data)
@@ -29,9 +29,7 @@ class Item(Resource):
         return item.json(), 201 
     
     def delete(self, name):
-        data = Item.parser.parse_args()
-
-        item = ItemModel.find_by_name(name, data['store_id'])
+        item = ItemModel.find_by_name(name)
         if item:
             item.delete_from_db()     
             
@@ -40,7 +38,7 @@ class Item(Resource):
     def put(self, name):
         
         data = Item.parser.parse_args()
-        item = ItemModel.find_by_name(name, data['store_id'])
+        item = ItemModel.find_by_name(name)
         if not item:
             item = ItemModel(name, **data)
         else:

@@ -23,8 +23,8 @@ class ItemModel(db.Model):
         db.session.commit()
 
     @classmethod
-    def find_by_name(cls, name, store_id):
-        return cls.query.filter_by(name=name, store_id=store_id).first()
+    def find_by_name(cls, name):
+        return cls.query.filter_by(name=name).first()
 
     def delete_from_db(self):
         db.session.delete(self)
